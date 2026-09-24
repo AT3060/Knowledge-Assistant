@@ -1,0 +1,262 @@
+{"id": "q0001", "question": "Wofür wird das KIS im Klinikum genutzt?", "type": "close", "split": "test", "qrels": {"KIS_Handbuch.pdf#3": 2}}
+{"id": "q0002", "question": "was ist eigentlich KIS?", "type": "colloquial", "split": "train", "qrels": {"KIS_Handbuch.pdf#3": 2}}
+{"id": "q0003", "question": "Wie beantrage ich Zugriff auf das KIS?", "type": "close", "split": "test", "qrels": {"KIS_Handbuch.pdf#4": 2}}
+{"id": "q0004", "question": "Wer genehmigt neue Berechtigungen im KIS?", "type": "paraphrase", "split": "train", "qrels": {"KIS_Handbuch.pdf#4": 2}}
+{"id": "q0005", "question": "Ich wechsle die Abteilung – was passiert mit meinen KIS-Rechten?", "type": "paraphrase", "split": "test", "qrels": {"KIS_Handbuch.pdf#5": 2}}
+{"id": "q0006", "question": "Wie oft werden die KIS-Berechtigungen überprüft?", "type": "paraphrase", "split": "train", "qrels": {"KIS_Handbuch.pdf#5": 2}}
+{"id": "q0007", "question": "Wie funktioniert die Anmeldung im KIS?", "type": "close", "split": "test", "qrels": {"KIS_Handbuch.pdf#6": 2}}
+{"id": "q0008", "question": "Brauche ich für das KIS eine eigene Anmeldung?", "type": "paraphrase", "split": "train", "qrels": {"KIS_Handbuch.pdf#6": 2}}
+{"id": "q0009", "question": "KIS Passwort vergessen, was tun?", "type": "colloquial", "split": "test", "qrels": {"KIS_Handbuch.pdf#7": 2}}
+{"id": "q0010", "question": "Wie setze ich meine Zugangsdaten im KIS zurück?", "type": "close", "split": "train", "qrels": {"KIS_Handbuch.pdf#7": 2}}
+{"id": "q0011", "question": "KIS geht nicht", "type": "colloquial", "split": "test", "qrels": {"KIS_Handbuch.pdf#8": 2}}
+{"id": "q0012", "question": "Wie melde ich eine Störung im KIS?", "type": "close", "split": "train", "qrels": {"KIS_Handbuch.pdf#8": 2}}
+{"id": "q0013", "question": "Was ist bei einem KIS-Ausfall zu tun?", "type": "close", "split": "test", "qrels": {"KIS_Handbuch.pdf#9": 2}}
+{"id": "q0014", "question": "Was muss nach einem KIS-Ausfall nachgetragen werden?", "type": "paraphrase", "split": "train", "qrels": {"KIS_Handbuch.pdf#9": 2}}
+{"id": "q0015", "question": "Gibt es eine Schulung für das KIS?", "type": "close", "split": "test", "qrels": {"KIS_Handbuch.pdf#10": 2}}
+{"id": "q0016", "question": "Ich bin neu, wie lerne ich KIS?", "type": "colloquial", "split": "train", "qrels": {"KIS_Handbuch.pdf#10": 2}}
+{"id": "q0017", "question": "Wird gespeichert, wer im KIS welche Daten ansieht?", "type": "paraphrase", "split": "test", "qrels": {"KIS_Handbuch.pdf#11": 2}}
+{"id": "q0018", "question": "Welche Datenschutzregeln gelten im KIS?", "type": "close", "split": "train", "qrels": {"KIS_Handbuch.pdf#11": 2}}
+{"id": "q0019", "question": "Arztbrief schon freigegeben, aber ein Fehler drin – was nun?", "type": "colloquial", "split": "test", "qrels": {"KIS_Handbuch.pdf#12": 2}}
+{"id": "q0020", "question": "Patient ist zweimal im System angelegt, wer korrigiert das?", "type": "paraphrase", "split": "train", "qrels": {"KIS_Handbuch.pdf#12": 2}}
+{"id": "q0021", "question": "Wer ist fachlich für das PACS verantwortlich?", "type": "paraphrase", "split": "test", "qrels": {"PACS_Handbuch.pdf#3": 2}}
+{"id": "q0022", "question": "Welches Team kümmert sich technisch um das PACS?", "type": "paraphrase", "split": "train", "qrels": {"PACS_Handbuch.pdf#3": 2}}
+{"id": "q0023", "question": "brauche PACS-Zugang, wie geht das?", "type": "colloquial", "split": "test", "qrels": {"PACS_Handbuch.pdf#4": 2}}
+{"id": "q0024", "question": "Wie lange dauert es, bis ich das PACS nutzen kann?", "type": "paraphrase", "split": "train", "qrels": {"PACS_Handbuch.pdf#4": 2}}
+{"id": "q0025", "question": "Wie werden PACS-Berechtigungen entzogen?", "type": "close", "split": "test", "qrels": {"PACS_Handbuch.pdf#5": 2}}
+{"id": "q0026", "question": "Kollege hat gekündigt, hat der noch PACS-Rechte?", "type": "colloquial", "split": "train", "qrels": {"PACS_Handbuch.pdf#5": 2}}
+{"id": "q0027", "question": "wie komm ich in das PACS rein?", "type": "colloquial", "split": "test", "qrels": {"PACS_Handbuch.pdf#6": 2}}
+{"id": "q0028", "question": "PACS Login – wie geht das?", "type": "colloquial", "split": "train", "qrels": {"PACS_Handbuch.pdf#6": 2}}
+{"id": "q0029", "question": "Wer hilft mir, wenn ich im PACS gesperrt bin?", "type": "paraphrase", "split": "test", "qrels": {"PACS_Handbuch.pdf#7": 2}}
+{"id": "q0030", "question": "Mein Kennwort für das PACS funktioniert nicht mehr.", "type": "paraphrase", "split": "train", "qrels": {"PACS_Handbuch.pdf#7": 2}}
+{"id": "q0031", "question": "Welche Priorität bekommt eine Störung im PACS?", "type": "paraphrase", "split": "test", "qrels": {"PACS_Handbuch.pdf#8": 2}}
+{"id": "q0032", "question": "Was kann ich selbst tun, bevor ich wegen das PACS die IT anrufe?", "type": "paraphrase", "split": "train", "qrels": {"PACS_Handbuch.pdf#8": 2}}
+{"id": "q0033", "question": "PACS ist komplett down, womit arbeiten wir jetzt?", "type": "colloquial", "split": "test", "qrels": {"PACS_Handbuch.pdf#9": 2}}
+{"id": "q0034", "question": "Notfallbetrieb PACS: wie läuft das?", "type": "colloquial", "split": "train", "qrels": {"PACS_Handbuch.pdf#9": 2}}
+{"id": "q0035", "question": "Wer sind die Key-User für das PACS?", "type": "paraphrase", "split": "test", "qrels": {"PACS_Handbuch.pdf#10": 2}}
+{"id": "q0036", "question": "Wo finde ich Schulungsunterlagen für das PACS?", "type": "close", "split": "train", "qrels": {"PACS_Handbuch.pdf#10": 2}}
+{"id": "q0037", "question": "Wie lange werden die PACS-Protokolle aufbewahrt?", "type": "close", "split": "test", "qrels": {"PACS_Handbuch.pdf#11": 2}}
+{"id": "q0038", "question": "kann die IT sehen, was ich im PACS mache?", "type": "colloquial", "split": "train", "qrels": {"PACS_Handbuch.pdf#11": 2}}
+{"id": "q0039", "question": "Patientin möchte ihre MRT-Bilder mit nach Hause nehmen", "type": "paraphrase", "split": "test", "qrels": {"PACS_Handbuch.pdf#12": 2}}
+{"id": "q0040", "question": "Kann ich CT-Bilder auf meinen Stick ziehen?", "type": "colloquial", "split": "train", "qrels": {"PACS_Handbuch.pdf#12": 2}}
+{"id": "q0041", "question": "Wofür wird das LIS im Klinikum genutzt?", "type": "close", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#3": 2}}
+{"id": "q0042", "question": "was ist eigentlich LIS?", "type": "colloquial", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#3": 2}}
+{"id": "q0043", "question": "Wie beantrage ich Zugriff auf das LIS?", "type": "close", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#4": 2}}
+{"id": "q0044", "question": "Wer genehmigt neue Berechtigungen im LIS?", "type": "paraphrase", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#4": 2}}
+{"id": "q0045", "question": "Ich wechsle die Abteilung – was passiert mit meinen LIS-Rechten?", "type": "paraphrase", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#5": 2}}
+{"id": "q0046", "question": "Wie oft werden die LIS-Berechtigungen überprüft?", "type": "paraphrase", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#5": 2}}
+{"id": "q0047", "question": "Wie funktioniert die Anmeldung im LIS?", "type": "close", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#6": 2}}
+{"id": "q0048", "question": "Brauche ich für das LIS eine eigene Anmeldung?", "type": "paraphrase", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#6": 2}}
+{"id": "q0049", "question": "LIS Passwort vergessen, was tun?", "type": "colloquial", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#7": 2}}
+{"id": "q0050", "question": "Wie setze ich meine Zugangsdaten im LIS zurück?", "type": "close", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#7": 2}}
+{"id": "q0051", "question": "LIS geht nicht", "type": "colloquial", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#8": 2}}
+{"id": "q0052", "question": "Wie melde ich eine Störung im LIS?", "type": "close", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#8": 2}}
+{"id": "q0053", "question": "Was ist bei einem LIS-Ausfall zu tun?", "type": "close", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#9": 2}}
+{"id": "q0054", "question": "Was muss nach einem LIS-Ausfall nachgetragen werden?", "type": "paraphrase", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#9": 2}}
+{"id": "q0055", "question": "Gibt es eine Schulung für das LIS?", "type": "close", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#10": 2}}
+{"id": "q0056", "question": "Ich bin neu, wie lerne ich LIS?", "type": "colloquial", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#10": 2}}
+{"id": "q0057", "question": "Wird gespeichert, wer im LIS welche Daten ansieht?", "type": "paraphrase", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#11": 2}}
+{"id": "q0058", "question": "Welche Datenschutzregeln gelten im LIS?", "type": "close", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#11": 2}}
+{"id": "q0059", "question": "Laborwerte fehlen noch in der Akte, obwohl die Probe längst weg ist", "type": "paraphrase", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#12": 2}}
+{"id": "q0060", "question": "Labor falsch angefordert, wie mache ich das rückgängig?", "type": "colloquial", "split": "train", "qrels": {"LIS_Labor_Handbuch.pdf#12": 2}}
+{"id": "q0061", "question": "Wer ist fachlich für das RIS verantwortlich?", "type": "paraphrase", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#3": 2}}
+{"id": "q0062", "question": "Welches Team kümmert sich technisch um das RIS?", "type": "paraphrase", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#3": 2}}
+{"id": "q0063", "question": "brauche RIS-Zugang, wie geht das?", "type": "colloquial", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#4": 2}}
+{"id": "q0064", "question": "Wie lange dauert es, bis ich das RIS nutzen kann?", "type": "paraphrase", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#4": 2}}
+{"id": "q0065", "question": "Wie werden RIS-Berechtigungen entzogen?", "type": "close", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#5": 2}}
+{"id": "q0066", "question": "Kollege hat gekündigt, hat der noch RIS-Rechte?", "type": "colloquial", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#5": 2}}
+{"id": "q0067", "question": "wie komm ich in das RIS rein?", "type": "colloquial", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#6": 2}}
+{"id": "q0068", "question": "RIS Login – wie geht das?", "type": "colloquial", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#6": 2}}
+{"id": "q0069", "question": "Wer hilft mir, wenn ich im RIS gesperrt bin?", "type": "paraphrase", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#7": 2}}
+{"id": "q0070", "question": "Mein Kennwort für das RIS funktioniert nicht mehr.", "type": "paraphrase", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#7": 2}}
+{"id": "q0071", "question": "Welche Priorität bekommt eine Störung im RIS?", "type": "paraphrase", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#8": 2}}
+{"id": "q0072", "question": "Was kann ich selbst tun, bevor ich wegen das RIS die IT anrufe?", "type": "paraphrase", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#8": 2}}
+{"id": "q0073", "question": "RIS ist komplett down, womit arbeiten wir jetzt?", "type": "colloquial", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#9": 2}}
+{"id": "q0074", "question": "Notfallbetrieb RIS: wie läuft das?", "type": "colloquial", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#9": 2}}
+{"id": "q0075", "question": "Wer sind die Key-User für das RIS?", "type": "paraphrase", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#10": 2}}
+{"id": "q0076", "question": "Wo finde ich Schulungsunterlagen für das RIS?", "type": "close", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#10": 2}}
+{"id": "q0077", "question": "Wie lange werden die RIS-Protokolle aufbewahrt?", "type": "close", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#11": 2}}
+{"id": "q0078", "question": "kann die IT sehen, was ich im RIS mache?", "type": "colloquial", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#11": 2}}
+{"id": "q0079", "question": "Station braucht einen MRT-Termin für einen Patienten, wer plant den?", "type": "paraphrase", "split": "test", "qrels": {"RIS_Radiologie_Handbuch.pdf#12": 2}}
+{"id": "q0080", "question": "Diktat erkennt meine Wörter falsch", "type": "colloquial", "split": "train", "qrels": {"RIS_Radiologie_Handbuch.pdf#12": 2}}
+{"id": "q0081", "question": "Wofür wird das DMS im Klinikum genutzt?", "type": "close", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#3": 2}}
+{"id": "q0082", "question": "was ist eigentlich DMS?", "type": "colloquial", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#3": 2}}
+{"id": "q0083", "question": "Wie beantrage ich Zugriff auf das DMS?", "type": "close", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#4": 2}}
+{"id": "q0084", "question": "Wer genehmigt neue Berechtigungen im DMS?", "type": "paraphrase", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#4": 2}}
+{"id": "q0085", "question": "Ich wechsle die Abteilung – was passiert mit meinen DMS-Rechten?", "type": "paraphrase", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#5": 2}}
+{"id": "q0086", "question": "Wie oft werden die DMS-Berechtigungen überprüft?", "type": "paraphrase", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#5": 2}}
+{"id": "q0087", "question": "Wie funktioniert die Anmeldung im DMS?", "type": "close", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#6": 2}}
+{"id": "q0088", "question": "Brauche ich für das DMS eine eigene Anmeldung?", "type": "paraphrase", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#6": 2}}
+{"id": "q0089", "question": "DMS Passwort vergessen, was tun?", "type": "colloquial", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#7": 2}}
+{"id": "q0090", "question": "Wie setze ich meine Zugangsdaten im DMS zurück?", "type": "close", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#7": 2}}
+{"id": "q0091", "question": "DMS geht nicht", "type": "colloquial", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#8": 2}}
+{"id": "q0092", "question": "Wie melde ich eine Störung im DMS?", "type": "close", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#8": 2}}
+{"id": "q0093", "question": "Was ist bei einem DMS-Ausfall zu tun?", "type": "close", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#9": 2}}
+{"id": "q0094", "question": "Was muss nach einem DMS-Ausfall nachgetragen werden?", "type": "paraphrase", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#9": 2}}
+{"id": "q0095", "question": "Gibt es eine Schulung für das DMS?", "type": "close", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#10": 2}}
+{"id": "q0096", "question": "Ich bin neu, wie lerne ich DMS?", "type": "colloquial", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#10": 2}}
+{"id": "q0097", "question": "Wird gespeichert, wer im DMS welche Daten ansieht?", "type": "paraphrase", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#11": 2}}
+{"id": "q0098", "question": "Welche Datenschutzregeln gelten im DMS?", "type": "close", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#11": 2}}
+{"id": "q0099", "question": "Wie viele Jahre bleiben alte Akten im Archiv?", "type": "paraphrase", "split": "test", "qrels": {"DMS_Archiv_Handbuch.pdf#12": 2}}
+{"id": "q0100", "question": "Befund im falschen Fall eingescannt, wer korrigiert das?", "type": "colloquial", "split": "train", "qrels": {"DMS_Archiv_Handbuch.pdf#12": 2}}
+{"id": "q0101", "question": "Wer ist fachlich für das Dienstplanprogramm verantwortlich?", "type": "paraphrase", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#3": 2}}
+{"id": "q0102", "question": "Welches Team kümmert sich technisch um das Dienstplanprogramm?", "type": "paraphrase", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#3": 2}}
+{"id": "q0103", "question": "brauche Dienstplan-Zugang, wie geht das?", "type": "colloquial", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#4": 2}}
+{"id": "q0104", "question": "Wie lange dauert es, bis ich das Dienstplanprogramm nutzen kann?", "type": "paraphrase", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#4": 2}}
+{"id": "q0105", "question": "Wie werden Dienstplan-Berechtigungen entzogen?", "type": "close", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#5": 2}}
+{"id": "q0106", "question": "Kollege hat gekündigt, hat der noch Dienstplan-Rechte?", "type": "colloquial", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#5": 2}}
+{"id": "q0107", "question": "wie komm ich in das Dienstplanprogramm rein?", "type": "colloquial", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#6": 2}}
+{"id": "q0108", "question": "Dienstplan Login – wie geht das?", "type": "colloquial", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#6": 2}}
+{"id": "q0109", "question": "Wer hilft mir, wenn ich im Dienstplanprogramm gesperrt bin?", "type": "paraphrase", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#7": 2}}
+{"id": "q0110", "question": "Mein Kennwort für das Dienstplanprogramm funktioniert nicht mehr.", "type": "paraphrase", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#7": 2}}
+{"id": "q0111", "question": "Welche Priorität bekommt eine Störung im Dienstplanprogramm?", "type": "paraphrase", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#8": 2}}
+{"id": "q0112", "question": "Was kann ich selbst tun, bevor ich wegen das Dienstplanprogramm die IT anrufe?", "type": "paraphrase", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#8": 2}}
+{"id": "q0113", "question": "Dienstplan ist komplett down, womit arbeiten wir jetzt?", "type": "colloquial", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#9": 2}}
+{"id": "q0114", "question": "Notfallbetrieb Dienstplan: wie läuft das?", "type": "colloquial", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#9": 2}}
+{"id": "q0115", "question": "Wer sind die Key-User für das Dienstplanprogramm?", "type": "paraphrase", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#10": 2}}
+{"id": "q0116", "question": "Wo finde ich Schulungsunterlagen für das Dienstplanprogramm?", "type": "close", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#10": 2}}
+{"id": "q0117", "question": "Wie lange werden die Dienstplan-Protokolle aufbewahrt?", "type": "close", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#11": 2}}
+{"id": "q0118", "question": "kann die IT sehen, was ich im Dienstplanprogramm mache?", "type": "colloquial", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#11": 2}}
+{"id": "q0119", "question": "Will mit einer Kollegin die Schicht tauschen, geht das online?", "type": "colloquial", "split": "test", "qrels": {"Dienstplan_Handbuch.pdf#12": 2}}
+{"id": "q0120", "question": "Wie viele Überstunden habe ich gerade?", "type": "paraphrase", "split": "train", "qrels": {"Dienstplan_Handbuch.pdf#12": 2}}
+{"id": "q0121", "question": "Wofür wird Outlook im Klinikum genutzt?", "type": "close", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#3": 2}}
+{"id": "q0122", "question": "was ist eigentlich E-Mail?", "type": "colloquial", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#3": 2}}
+{"id": "q0123", "question": "Wie beantrage ich Zugriff auf Outlook?", "type": "close", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#4": 2}}
+{"id": "q0124", "question": "Wer genehmigt neue Berechtigungen in Outlook?", "type": "paraphrase", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#4": 2}}
+{"id": "q0125", "question": "Ich wechsle die Abteilung – was passiert mit meinen E-Mail-Rechten?", "type": "paraphrase", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#5": 2}}
+{"id": "q0126", "question": "Wie oft werden die E-Mail-Berechtigungen überprüft?", "type": "paraphrase", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#5": 2}}
+{"id": "q0127", "question": "Wie funktioniert die Anmeldung in Outlook?", "type": "close", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#6": 2}}
+{"id": "q0128", "question": "Brauche ich für Outlook eine eigene Anmeldung?", "type": "paraphrase", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#6": 2}}
+{"id": "q0129", "question": "E-Mail Passwort vergessen, was tun?", "type": "colloquial", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#7": 2}}
+{"id": "q0130", "question": "Wie setze ich meine Zugangsdaten in Outlook zurück?", "type": "close", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#7": 2}}
+{"id": "q0131", "question": "E-Mail geht nicht", "type": "colloquial", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#8": 2}}
+{"id": "q0132", "question": "Wie melde ich eine Störung in Outlook?", "type": "close", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#8": 2}}
+{"id": "q0133", "question": "Was ist bei einem E-Mail-Ausfall zu tun?", "type": "close", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#9": 2}}
+{"id": "q0134", "question": "Was muss nach einem E-Mail-Ausfall nachgetragen werden?", "type": "paraphrase", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#9": 2}}
+{"id": "q0135", "question": "Gibt es eine Schulung für Outlook?", "type": "close", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#10": 2}}
+{"id": "q0136", "question": "Ich bin neu, wie lerne ich E-Mail?", "type": "colloquial", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#10": 2}}
+{"id": "q0137", "question": "Wird gespeichert, wer in Outlook welche Daten ansieht?", "type": "paraphrase", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#11": 2}}
+{"id": "q0138", "question": "Welche Datenschutzregeln gelten in Outlook?", "type": "close", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#11": 2}}
+{"id": "q0139", "question": "Bin im Urlaub, wie stelle ich eine automatische Antwort ein?", "type": "paraphrase", "split": "test", "qrels": {"EMail_Outlook_Handbuch.pdf#12": 2}}
+{"id": "q0140", "question": "Outlook sagt Postfach voll", "type": "colloquial", "split": "train", "qrels": {"EMail_Outlook_Handbuch.pdf#12": 2}}
+{"id": "q0141", "question": "Wer ist fachlich für das VPN verantwortlich?", "type": "paraphrase", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#3": 2}}
+{"id": "q0142", "question": "Welches Team kümmert sich technisch um das VPN?", "type": "paraphrase", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#3": 2}}
+{"id": "q0143", "question": "brauche VPN-Zugang, wie geht das?", "type": "colloquial", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#4": 2}}
+{"id": "q0144", "question": "Wie lange dauert es, bis ich das VPN nutzen kann?", "type": "paraphrase", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#4": 2}}
+{"id": "q0145", "question": "Wie werden VPN-Berechtigungen entzogen?", "type": "close", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#5": 2}}
+{"id": "q0146", "question": "Kollege hat gekündigt, hat der noch VPN-Rechte?", "type": "colloquial", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#5": 2}}
+{"id": "q0147", "question": "wie komm ich in das VPN rein?", "type": "colloquial", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#6": 2}}
+{"id": "q0148", "question": "VPN Login – wie geht das?", "type": "colloquial", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#6": 2}}
+{"id": "q0149", "question": "Wer hilft mir, wenn ich im VPN gesperrt bin?", "type": "paraphrase", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#7": 2}}
+{"id": "q0150", "question": "Mein Kennwort für das VPN funktioniert nicht mehr.", "type": "paraphrase", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#7": 2}}
+{"id": "q0151", "question": "Welche Priorität bekommt eine Störung im VPN?", "type": "paraphrase", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#8": 2}}
+{"id": "q0152", "question": "Was kann ich selbst tun, bevor ich wegen das VPN die IT anrufe?", "type": "paraphrase", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#8": 2}}
+{"id": "q0153", "question": "VPN ist komplett down, womit arbeiten wir jetzt?", "type": "colloquial", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#9": 2}}
+{"id": "q0154", "question": "Notfallbetrieb VPN: wie läuft das?", "type": "colloquial", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#9": 2}}
+{"id": "q0155", "question": "Wer sind die Key-User für das VPN?", "type": "paraphrase", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#10": 2}}
+{"id": "q0156", "question": "Wo finde ich Schulungsunterlagen für das VPN?", "type": "close", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#10": 2}}
+{"id": "q0157", "question": "Wie lange werden die VPN-Protokolle aufbewahrt?", "type": "close", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#11": 2}}
+{"id": "q0158", "question": "kann die IT sehen, was ich im VPN mache?", "type": "colloquial", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#11": 2}}
+{"id": "q0159", "question": "Bin im Urlaub in Spanien, geht das VPN da?", "type": "colloquial", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#12": 2}}
+{"id": "q0160", "question": "VPN extrem langsam bei Online-Meetings", "type": "colloquial", "split": "train", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#12": 2}}
+{"id": "q0161", "question": "Wofür werden die Netzlaufwerke im Klinikum genutzt?", "type": "close", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#3": 2}}
+{"id": "q0162", "question": "was ist eigentlich Netzlaufwerk?", "type": "colloquial", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#3": 2}}
+{"id": "q0163", "question": "Wie beantrage ich Zugriff auf die Netzlaufwerke?", "type": "close", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#4": 2}}
+{"id": "q0164", "question": "Wer genehmigt neue Berechtigungen auf den Netzlaufwerken?", "type": "paraphrase", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#4": 2}}
+{"id": "q0165", "question": "Ich wechsle die Abteilung – was passiert mit meinen Netzlaufwerk-Rechten?", "type": "paraphrase", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#5": 2}}
+{"id": "q0166", "question": "Wie oft werden die Netzlaufwerk-Berechtigungen überprüft?", "type": "paraphrase", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#5": 2}}
+{"id": "q0167", "question": "Wie funktioniert die Anmeldung auf den Netzlaufwerken?", "type": "close", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#6": 2}}
+{"id": "q0168", "question": "Brauche ich für die Netzlaufwerke eine eigene Anmeldung?", "type": "paraphrase", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#6": 2}}
+{"id": "q0169", "question": "Netzlaufwerk Passwort vergessen, was tun?", "type": "colloquial", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#7": 2}}
+{"id": "q0170", "question": "Wie setze ich meine Zugangsdaten auf den Netzlaufwerken zurück?", "type": "close", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#7": 2}}
+{"id": "q0171", "question": "Netzlaufwerk geht nicht", "type": "colloquial", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#8": 2}}
+{"id": "q0172", "question": "Wie melde ich eine Störung auf den Netzlaufwerken?", "type": "close", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#8": 2}}
+{"id": "q0173", "question": "Was ist bei einem Netzlaufwerk-Ausfall zu tun?", "type": "close", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#9": 2}}
+{"id": "q0174", "question": "Was muss nach einem Netzlaufwerk-Ausfall nachgetragen werden?", "type": "paraphrase", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#9": 2}}
+{"id": "q0175", "question": "Gibt es eine Schulung für die Netzlaufwerke?", "type": "close", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#10": 2}}
+{"id": "q0176", "question": "Ich bin neu, wie lerne ich Netzlaufwerk?", "type": "colloquial", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#10": 2}}
+{"id": "q0177", "question": "Wird gespeichert, wer auf den Netzlaufwerken welche Daten ansieht?", "type": "paraphrase", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#11": 2}}
+{"id": "q0178", "question": "Welche Datenschutzregeln gelten auf den Netzlaufwerken?", "type": "close", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#11": 2}}
+{"id": "q0179", "question": "Datei aus Versehen gelöscht, kann man die zurückholen?", "type": "colloquial", "split": "test", "qrels": {"Netzlaufwerke_Handbuch.pdf#12": 2}}
+{"id": "q0180", "question": "Mein H-Laufwerk ist voll", "type": "colloquial", "split": "train", "qrels": {"Netzlaufwerke_Handbuch.pdf#12": 2}}
+{"id": "q0181", "question": "Wer ist fachlich für SAP verantwortlich?", "type": "paraphrase", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#3": 2}}
+{"id": "q0182", "question": "Welches Team kümmert sich technisch um SAP?", "type": "paraphrase", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#3": 2}}
+{"id": "q0183", "question": "brauche SAP-Zugang, wie geht das?", "type": "colloquial", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#4": 2}}
+{"id": "q0184", "question": "Wie lange dauert es, bis ich SAP nutzen kann?", "type": "paraphrase", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#4": 2}}
+{"id": "q0185", "question": "Wie werden SAP-Berechtigungen entzogen?", "type": "close", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#5": 2}}
+{"id": "q0186", "question": "Kollege hat gekündigt, hat der noch SAP-Rechte?", "type": "colloquial", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#5": 2}}
+{"id": "q0187", "question": "wie komm ich in SAP rein?", "type": "colloquial", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#6": 2}}
+{"id": "q0188", "question": "SAP Login – wie geht das?", "type": "colloquial", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#6": 2}}
+{"id": "q0189", "question": "Wer hilft mir, wenn ich in SAP gesperrt bin?", "type": "paraphrase", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#7": 2}}
+{"id": "q0190", "question": "Mein Kennwort für SAP funktioniert nicht mehr.", "type": "paraphrase", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#7": 2}}
+{"id": "q0191", "question": "Welche Priorität bekommt eine Störung in SAP?", "type": "paraphrase", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#8": 2}}
+{"id": "q0192", "question": "Was kann ich selbst tun, bevor ich wegen SAP die IT anrufe?", "type": "paraphrase", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#8": 2}}
+{"id": "q0193", "question": "SAP ist komplett down, womit arbeiten wir jetzt?", "type": "colloquial", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#9": 2}}
+{"id": "q0194", "question": "Notfallbetrieb SAP: wie läuft das?", "type": "colloquial", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#9": 2}}
+{"id": "q0195", "question": "Wer sind die Key-User für SAP?", "type": "paraphrase", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#10": 2}}
+{"id": "q0196", "question": "Wo finde ich Schulungsunterlagen für SAP?", "type": "close", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#10": 2}}
+{"id": "q0197", "question": "Wie lange werden die SAP-Protokolle aufbewahrt?", "type": "close", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#11": 2}}
+{"id": "q0198", "question": "kann die IT sehen, was ich in SAP mache?", "type": "colloquial", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#11": 2}}
+{"id": "q0199", "question": "Wo sehe ich, ob unsere Materialbestellung schon unterwegs ist?", "type": "paraphrase", "split": "test", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#12": 2}}
+{"id": "q0200", "question": "Station braucht Nachschub an Arzneimitteln, welcher Weg?", "type": "paraphrase", "split": "train", "qrels": {"SAP_Materialwirtschaft_Handbuch.pdf#12": 2}}
+{"id": "q0201", "question": "IT Hotline Nummer?", "type": "colloquial", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#3": 2}}
+{"id": "q0202", "question": "Wann ist der Servicedesk für normale Anfragen besetzt?", "type": "close", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#3": 2}}
+{"id": "q0203", "question": "Wo sehe ich, was aus meinem Ticket geworden ist?", "type": "paraphrase", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#4": 2}}
+{"id": "q0204", "question": "Was kann man alles im Self-Service-Portal machen?", "type": "close", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#4": 2}}
+{"id": "q0205", "question": "Wie schnell muss die IT bei einem kritischen Problem reagieren?", "type": "paraphrase", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#5": 2}}
+{"id": "q0206", "question": "Welche Ticket-Prioritäten gibt es?", "type": "close", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#5": 2}}
+{"id": "q0207", "question": "Was muss ich angeben, wenn ich der IT einen Fehler melde?", "type": "paraphrase", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#6": 2}}
+{"id": "q0208", "question": "Wo steht die Inventarnummer von meinem PC?", "type": "colloquial", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#6": 2}}
+{"id": "q0209", "question": "Nachts funktioniert nichts mehr, wen rufe ich an?", "type": "colloquial", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#7": 2}}
+{"id": "q0210", "question": "An wen wende ich mich, wenn mein Ticket liegen bleibt?", "type": "paraphrase", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#7": 2}}
+{"id": "q0211", "question": "Muss jeder einzeln anrufen, wenn das ganze Haus betroffen ist?", "type": "paraphrase", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#8": 2}}
+{"id": "q0212", "question": "Was ist ein Major Incident?", "type": "close", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#8": 2}}
+{"id": "q0213", "question": "Neuer Kollege fängt Montag an, hat der schon einen Account?", "type": "colloquial", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#9": 2}}
+{"id": "q0214", "question": "Wie ist mein Benutzername aufgebaut?", "type": "close", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#9": 2}}
+{"id": "q0215", "question": "Wie lange gilt ein Konto für Gastärzte?", "type": "close", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#10": 2}}
+{"id": "q0216", "question": "Was passiert mit meinem Account, wenn ich kündige?", "type": "colloquial", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#10": 2}}
+{"id": "q0217", "question": "Ich hätte gern einen zweiten Bildschirm", "type": "colloquial", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#11": 2}}
+{"id": "q0218", "question": "Wie lange dauert die Lieferung neuer Hardware?", "type": "close", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#11": 2}}
+{"id": "q0219", "question": "Wie installiere ich ein Programm auf meinem PC?", "type": "close", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#12": 2}}
+{"id": "q0220", "question": "Warum darf ich nichts installieren?", "type": "colloquial", "split": "train", "qrels": {"Servicedesk_Handbuch.pdf#12": 2}}
+{"id": "q0221", "question": "Wer ist bei uns für IT-Sicherheit zuständig?", "type": "paraphrase", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#3": 2}}
+{"id": "q0222", "question": "Gilt die Sicherheitsrichtlinie auch für externe Firmen?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#3": 2}}
+{"id": "q0223", "question": "Wie lang muss mein Passwort sein?", "type": "close", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#4": 2}}
+{"id": "q0224", "question": "Warum muss ich mein Kennwort ständig ändern?", "type": "colloquial", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#4": 2}}
+{"id": "q0225", "question": "Darf ich ein Foto einer Wunde per WhatsApp an den Oberarzt schicken?", "type": "paraphrase", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#5": 2}}
+{"id": "q0226", "question": "Welche Regeln gelten für Patientendaten?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#5": 2}}
+{"id": "q0227", "question": "Komische Mail mit Link bekommen, was mache ich?", "type": "colloquial", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#6": 2}}
+{"id": "q0228", "question": "Wie melde ich eine Phishing-Mail?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#6": 2}}
+{"id": "q0229", "question": "Mein USB-Stick wird am PC nicht erkannt", "type": "colloquial", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#7": 2}}
+{"id": "q0230", "question": "Wer genehmigt die Nutzung von USB-Sticks?", "type": "paraphrase", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#7": 2}}
+{"id": "q0231", "question": "Wie schicke ich einer externen Firma eine große Datei?", "type": "paraphrase", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#8": 2, "Netzlaufwerke_Handbuch.pdf#3": 1}}
+{"id": "q0232", "question": "Darf ich Dropbox benutzen?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#8": 2}}
+{"id": "q0233", "question": "Kann ich mein privates Handy ins Klinik-WLAN bringen?", "type": "colloquial", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#9": 2}}
+{"id": "q0234", "question": "Gibt es WLAN für private Geräte?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#9": 2}}
+{"id": "q0235", "question": "Wohin mit alten Ausdrucken, auf denen Patientennamen stehen?", "type": "paraphrase", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#10": 2}}
+{"id": "q0236", "question": "Wie sperre ich schnell meinen Bildschirm?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#10": 2}}
+{"id": "q0237", "question": "Diensthandy verloren, was jetzt?", "type": "colloquial", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#11": 2}}
+{"id": "q0238", "question": "Was zählt als Sicherheitsvorfall?", "type": "close", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#11": 2}}
+{"id": "q0239", "question": "Muss ich diese Datenschutz-Schulung wirklich jedes Jahr machen?", "type": "colloquial", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#12": 2}}
+{"id": "q0240", "question": "Bis wann müssen neue Mitarbeitende die Sicherheitsschulung machen?", "type": "paraphrase", "split": "train", "qrels": {"IT_Sicherheitsrichtlinie.pdf#12": 2}}
+{"id": "q0241", "question": "Neue Kollegin auf Station braucht KIS und PACS – wie bekommt sie beides?", "type": "multi_page", "split": "test", "qrels": {"KIS_Handbuch.pdf#4": 2, "PACS_Handbuch.pdf#4": 2, "Servicedesk_Handbuch.pdf#9": 1}}
+{"id": "q0242", "question": "Wer genehmigt Zugriffe auf die Radiologie-Systeme?", "type": "multi_page", "split": "test", "qrels": {"PACS_Handbuch.pdf#4": 2, "RIS_Radiologie_Handbuch.pdf#4": 2}}
+{"id": "q0243", "question": "Ab nächster Woche Homeoffice – wie komme ich von zu Hause an meine Dateien?", "type": "multi_page", "split": "test", "qrels": {"VPN_Fernzugriff_Handbuch.pdf#4": 2, "Netzlaufwerke_Handbuch.pdf#6": 2}}
+{"id": "q0244", "question": "Habe auf einen Link in einer verdächtigen Mail geklickt", "type": "multi_page", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#6": 2, "IT_Sicherheitsrichtlinie.pdf#11": 1}}
+{"id": "q0245", "question": "Weder Laborwerte noch Bilder sind abrufbar – wie arbeiten wir weiter?", "type": "multi_page", "split": "test", "qrels": {"LIS_Labor_Handbuch.pdf#9": 2, "PACS_Handbuch.pdf#9": 2}}
+{"id": "q0246", "question": "Mein Windows-Passwort ist abgelaufen, jetzt komme ich auch nicht mehr ins KIS", "type": "multi_page", "split": "test", "qrels": {"IT_Sicherheitsrichtlinie.pdf#4": 2, "KIS_Handbuch.pdf#7": 2}}
+{"id": "q0247", "question": "Wie lange werden Zugriffe auf Patientenakten protokolliert?", "type": "multi_page", "split": "test", "qrels": {"KIS_Handbuch.pdf#11": 2, "DMS_Archiv_Handbuch.pdf#11": 1}}
+{"id": "q0248", "question": "KIS auf der ganzen Station ausgefallen – welche Priorität und wie schnell reagiert die IT?", "type": "multi_page", "split": "test", "qrels": {"KIS_Handbuch.pdf#8": 2, "Servicedesk_Handbuch.pdf#5": 2}}
+{"id": "q0249", "question": "Ein Oberarzt ist ausgeschieden – werden seine Zugänge automatisch gesperrt?", "type": "multi_page", "split": "test", "qrels": {"Servicedesk_Handbuch.pdf#10": 2, "KIS_Handbuch.pdf#5": 1}}
+{"id": "q0250", "question": "Wie schicke ich einer Partnerklinik Röntgenbilder, ohne gegen den Datenschutz zu verstoßen?", "type": "multi_page", "split": "test", "qrels": {"PACS_Handbuch.pdf#11": 2, "IT_Sicherheitsrichtlinie.pdf#8": 1}}
+{"id": "q0251", "question": "Wann ist die nächste Weihnachtsfeier?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0252", "question": "Wie hoch ist das Gehalt einer Pflegekraft?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0253", "question": "Wo ist die Cafeteria?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0254", "question": "Wie beantrage ich Elternzeit?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0255", "question": "Welche Parkplätze darf ich als Mitarbeiter nutzen?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0256", "question": "Wie melde ich mich für den Firmenlauf an?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0257", "question": "Wer ist Chefarzt der Kardiologie?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0258", "question": "Wie beantrage ich einen Dienstwagen?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0259", "question": "Welches Antivirenprogramm läuft auf den Servern?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0260", "question": "Wann wird Windows 12 im Klinikum eingeführt?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0261", "question": "Wie drucke ich in Farbe?", "type": "unanswerable", "split": "test", "qrels": {}}
+{"id": "q0262", "question": "Wie verbinde ich mein Diensthandy mit dem Auto per Bluetooth?", "type": "unanswerable", "split": "test", "qrels": {}}
