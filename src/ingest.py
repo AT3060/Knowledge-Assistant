@@ -86,7 +86,7 @@ def chunk_sentences(sentences, max_words, overlap_sentences):
 # ---------------------------------------------------------------- 4. pipeline
 def build_chunks(max_words, overlap_sentences):
     chunks, skipped, extracted = [], [], {}
-    for pdf in sorted((DATA / "docs").glob("*.pdf")):
+    for pdf in sorted((DATA / "docs").glob("*.pdf"), key=lambda p: p.name):
         for page_no, raw in extract_pages(pdf):
             page_id = f"{pdf.name}#{page_no}"
             if not is_content_page(raw):
