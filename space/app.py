@@ -11,6 +11,7 @@ Local test on a laptop (CPU, small models, no GPU needed):
 import json
 import os
 import sys
+import traceback
 from pathlib import Path
 from urllib.parse import quote
 
@@ -43,11 +44,14 @@ with open(ROOT / "data" / "chunks.jsonl", encoding="utf-8") as f:
 
 use_gpu = ON_SPACES or torch.cuda.is_available()
 generator = Generator(LLM, device_map=None, dtype=torch.bfloat16 if use_gpu else torch.float32)
-# Retrieval models are created on the CPU (chunk embeddings are computed at startup, outside the GPU window).
-rag = RAGPipeline(CHUNKS, generator, reranker_key=RERANKER, device="cpu")
+# ZeroGPU rule (found by bisection): at startup only LOAD models and move them with .to("cuda").
+# Running any model at startup (e.g. encoding the chunks) breaks the GPU worker, so the chunk
+# embeddings are computed lazily on the first question, inside the @spaces.GPU function.
+rag = RAGPipeline(CHUNKS, generator, reranker_key=RERANKER, device="cpu", lazy_index=True)
 if use_gpu:
     generator.model.to("cuda")
     rag.reranker.model.to("cuda")
+    rag.hybrid.dense.model.to("cuda")
 
 
 @gpu
@@ -98,7 +102,12 @@ def ask(question):
     question = (question or "").strip()
     if not question:
         return "Bitte geben Sie eine Frage ein.", "", "", "", {}
-    result = run_pipeline(question)
+    try:
+        result = run_pipeline(question)
+    except Exception:                                   # noqa: BLE001
+        traceback.print_exc()                           # full details go to the Space logs
+        return ("Es ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es in einem Moment erneut.",
+                "", "", "", {})
     answer = NO_ANSWER + " Wenden Sie sich bei Bedarf an den IT-Servicedesk (Durchwahl 4444)." \
         if result["abstained"] else result["raw_answer"]
     timing = (f"<span class='timing'>Suche {result['t_retrieve']:.1f} s · "

@@ -20,22 +20,35 @@ import numpy as np
 
 class DenseRetriever:
     def __init__(self, texts, model_name="intfloat/multilingual-e5-small",
-                 query_prefix="query: ", passage_prefix="passage: ", device=None):
+                 query_prefix="query: ", passage_prefix="passage: ", device=None, lazy=False):
         # Imported here so the rest of the project works without installing torch.
         from sentence_transformers import SentenceTransformer
 
         self.model = SentenceTransformer(model_name, device=device)
         self.query_prefix = query_prefix
+        self.passages = [passage_prefix + t for t in texts]
+        self.model_name = model_name
+        self.matrix = None
+        if not lazy:
+            self.build_index()
+
+    def build_index(self):
+        """Encode all chunks. With lazy=True this happens on the first search instead of at startup
+        (on ZeroGPU, models must not compute anything at startup - only inside @spaces.GPU)."""
         start = time.perf_counter()
-        self.matrix = self.model.encode([passage_prefix + t for t in texts],
-                                        normalize_embeddings=True, batch_size=32)
+        self.matrix = self.model.encode(self.passages, normalize_embeddings=True, batch_size=32)
+        if hasattr(self.matrix, "cpu"):
+            self.matrix = self.matrix.cpu().numpy()
         self.index_seconds = time.perf_counter() - start
-        print(f"  encoded {len(texts)} chunks with {model_name} "
-              f"(prefixes: {query_prefix!r}/{passage_prefix!r}) -> matrix {self.matrix.shape}, "
-              f"{self.index_seconds:.1f} s")
+        print(f"  encoded {len(self.passages)} chunks with {self.model_name} -> matrix "
+              f"{self.matrix.shape}, {self.index_seconds:.1f} s")
 
     def scores(self, query):
+        if self.matrix is None:
+            self.build_index()
         q = self.model.encode(self.query_prefix + query, normalize_embeddings=True)
+        if hasattr(q, "cpu"):
+            q = q.cpu().numpy()
         return self.matrix @ q                        # cosine similarity with every chunk
 
     def search(self, query, k=50):

@@ -23,11 +23,11 @@ def with_header(chunk):
 
 class RAGPipeline:
     def __init__(self, chunks, generator=None, reranker_key="large", alpha=0.7, pool=20, top_k=5,
-                 device=None):
+                 device=None, lazy_index=False):
         self.chunks, self.generator, self.pool, self.top_k = chunks, generator, pool, top_k
         self.texts = [with_header(c) for c in chunks]
         self.hybrid = Hybrid(BM25(self.texts, Tokenizer(stopwords=True, stemming=True)),
-                             DenseRetriever(self.texts, E5, device=device), "weighted", alpha)
+                             DenseRetriever(self.texts, E5, device=device, lazy=lazy_index), "weighted", alpha)
         self.reranker = Reranker.from_key(reranker_key, device=device)
 
     def retrieve(self, question):
