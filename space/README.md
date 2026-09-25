@@ -8,7 +8,7 @@ sdk_version: 6.28.0
 app_file: app.py
 pinned: false
 license: apache-2.0
-short_description: German RAG assistant for hospital IT docs, with page citations
+short_description: German RAG for hospital IT docs with page citations
 models:
   - Qwen/Qwen2.5-7B-Instruct
   - BAAI/bge-reranker-v2-m3
