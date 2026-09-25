@@ -1,9 +1,9 @@
 """
-Step 4 - Evaluate retrievers on the test questions.
+Step 4/5 - Evaluate retrievers on the test questions.
 
 Every retriever is just a function:  question -> list of chunk indices, best first.
 The harness turns chunk rankings into PAGE rankings (the qrels are pages), then uses
-metrics.py from Step 1. Steps 5 and 6 add dense and hybrid retrievers to the same table.
+metrics.py from Step 1.
 
 Run:  python eval/evaluate_retrieval.py
 """
@@ -13,10 +13,13 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))                 # so we can import src/bm25.py
+sys.path.insert(0, str(ROOT / "src"))                 # so we can import from src/
 
 from bm25 import BM25, Tokenizer                       # noqa: E402
+from dense import DenseRetriever                       # noqa: E402
 from metrics import dedupe, evaluate, recall_at_k      # noqa: E402  (eval/metrics.py)
+
+E5 = "intfloat/multilingual-e5-small"
 
 
 def load_jsonl(path):
@@ -25,8 +28,7 @@ def load_jsonl(path):
 
 
 def with_header(chunk):
-    """'Contextual header': put document name and section title in front of the chunk text,
-    so a chunk like 'Nach der Genehmigung ...' still says WHICH system it belongs to."""
+    """'Contextual header': document name and section title in front of the chunk text."""
     doc = chunk["doc"].removesuffix(".pdf").replace("_", " ")
     return f"{doc} – {chunk['title']}: {chunk['text']}"
 
@@ -39,11 +41,11 @@ def run_retriever(search, questions, chunks):
     return run, (time.perf_counter() - start) / len(questions) * 1000
 
 
-def print_table(rows):
-    metrics = list(next(iter(rows.values())).keys())
-    print(f"{'':32s}" + "".join(f"{m:>11s}" for m in metrics))
+def print_table(rows, width=34):
+    cols = list(next(iter(rows.values())).keys())
+    print(f"{'':{width}s}" + "".join(f"{c:>12s}" for c in cols))
     for name, scores in rows.items():
-        print(f"{name:32s}" + "".join(f"{scores[m]:11.3f}" for m in metrics))
+        print(f"{name:{width}s}" + "".join(f"{scores[c]:12.3f}" for c in cols))
 
 
 def main():
@@ -55,11 +57,13 @@ def main():
 
     plain = [c["text"] for c in chunks]
     headed = [with_header(c) for c in chunks]
+
+    print("Building indexes ...")
     retrievers = {
-        "BM25 basic":                   BM25(plain, Tokenizer()).search,
-        "BM25 + stopwords":             BM25(plain, Tokenizer(stopwords=True)).search,
-        "BM25 + stopwords + stemming":  BM25(plain, Tokenizer(stopwords=True, stemming=True)).search,
-        "BM25 + stop + stem + header":  BM25(headed, Tokenizer(stopwords=True, stemming=True)).search,
+        "BM25 (stop+stem+header)":     BM25(headed, Tokenizer(stopwords=True, stemming=True)).search,
+        "Dense e5-small, NO prefixes": DenseRetriever(plain, E5, "", "").search,
+        "Dense e5-small":              DenseRetriever(plain, E5).search,
+        "Dense e5-small + header":     DenseRetriever(headed, E5).search,
     }
 
     results, runs = {}, {}
@@ -67,24 +71,37 @@ def main():
         run, ms = run_retriever(search, questions, chunks)
         runs[name] = run
         results[name] = evaluate(run, qrels) | {"ms/query": ms}
+    print()
     print_table(results)
 
-    # ---- which kinds of questions are hard?  (per question type, last retriever)
-    best = list(retrievers)[-1]
-    print(f"\nPer question type ({best}):")
-    by_type = {}
-    for q in questions:
-        by_type.setdefault(q["type"], []).append(q)
-    print_table({f"{t} (n={len(qs)})": evaluate({q['id']: runs[best][q['id']] for q in qs},
-                                                 {q['id']: q['qrels'] for q in qs})
-                 for t, qs in by_type.items()})
+    # ---- Recall@5 per question type, for every retriever
+    types = sorted({q["type"] for q in questions})
+    print("\nRecall@5 per question type:")
+    rows = {}
+    for name in retrievers:
+        rows[name] = {f"{t}": sum(recall_at_k(runs[name][q["id"]], q["qrels"], 5)
+                                  for q in questions if q["type"] == t)
+                      / sum(q["type"] == t for q in questions) for t in types}
+    print_table(rows)
 
-    # ---- error analysis: questions where the right page is not even in the top 5
-    misses = [q for q in questions if recall_at_k(runs[best][q["id"]], q["qrels"], 5) == 0]
-    print(f"\nMisses at Recall@5 ({len(misses)} questions), first 8:")
-    for q in misses[:8]:
-        gold = ", ".join(q["qrels"])
-        print(f"  [{q['type']}] {q['question']}\n      gold: {gold}\n      got:  {runs[best][q['id']][:3]}")
+    # ---- Do BM25 and dense fail on the SAME questions?  (this motivates hybrid search in Step 6)
+    bm25_name, dense_name = "BM25 (stop+stem+header)", "Dense e5-small + header"
+    hit = {n: {q["id"] for q in questions if recall_at_k(runs[n][q["id"]], q["qrels"], 5) > 0}
+           for n in (bm25_name, dense_name)}
+    all_ids = {q["id"] for q in questions}
+    only_bm25 = hit[bm25_name] - hit[dense_name]
+    only_dense = hit[dense_name] - hit[bm25_name]
+    neither = all_ids - hit[bm25_name] - hit[dense_name]
+    print(f"\nRecall@5 hits:  both {len(hit[bm25_name] & hit[dense_name])}, "
+          f"only BM25 {len(only_bm25)}, only dense {len(only_dense)}, neither {len(neither)}")
+
+    by_id = {q["id"]: q for q in questions}
+    for label, ids in (("Found ONLY by dense", only_dense), ("Found ONLY by BM25", only_bm25),
+                       ("Found by NEITHER", neither)):
+        print(f"\n{label} (first 5):")
+        for qid in sorted(ids)[:5]:
+            q = by_id[qid]
+            print(f"  [{q['type']}] {q['question']}   gold: {', '.join(q['qrels'])}")
 
 
 if __name__ == "__main__":

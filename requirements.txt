@@ -1,3 +1,4 @@
 reportlab
 pypdf
 snowballstemmer
+sentence-transformers
