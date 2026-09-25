@@ -51,13 +51,15 @@ def is_abstention(answer):
 class Generator:
     """A local Hugging Face instruct model. Greedy decoding: same input -> same answer."""
 
-    def __init__(self, model_id, load_4bit=False):
+    def __init__(self, model_id, load_4bit=False, device_map="auto", dtype=None):
+        """device_map="auto" spreads the model over all visible GPUs (Kaggle: 2x T4).
+        device_map=None loads it normally, so the caller can move it with .to("cuda") (ZeroGPU)."""
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
         self.model_id = model_id
         self.tok = AutoTokenizer.from_pretrained(model_id)
-        kwargs = {"device_map": "auto"}                   # spread over all GPUs if one is too small
+        kwargs = {"device_map": device_map} if device_map else {}
         if load_4bit:
             from transformers import BitsAndBytesConfig
             kwargs["quantization_config"] = BitsAndBytesConfig(
@@ -67,9 +69,11 @@ class Generator:
             # headroom on every GPU instead of letting device_map="auto" fill one GPU completely.
             kwargs["max_memory"] = {i: "9GiB" for i in range(torch.cuda.device_count())}
         else:
-            # bfloat16 needs GPU compute capability >= 8 (A100, H100 ...). The T4 is 7.5 -> float16.
-            major = torch.cuda.get_device_capability()[0] if torch.cuda.is_available() else 0
-            kwargs["dtype"] = torch.bfloat16 if major >= 8 else torch.float16
+            if dtype is None:
+                # bfloat16 needs GPU compute capability >= 8 (A100, H100 ...). The T4 is 7.5 -> float16.
+                major = torch.cuda.get_device_capability()[0] if torch.cuda.is_available() else 0
+                dtype = torch.bfloat16 if major >= 8 else torch.float16
+            kwargs["dtype"] = dtype
         self.model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
         self.model.eval()
 

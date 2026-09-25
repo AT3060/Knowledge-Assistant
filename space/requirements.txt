@@ -1,0 +1,5 @@
+sentence-transformers>=5
+transformers
+accelerate
+snowballstemmer
+numpy

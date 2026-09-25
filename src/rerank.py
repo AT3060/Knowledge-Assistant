@@ -26,18 +26,18 @@ SMALL, LARGE = MODELS["small"][0], MODELS["large"][0]
 
 
 class Reranker:
-    def __init__(self, model_name=SMALL, trust_remote_code=False, max_length=512):
+    def __init__(self, model_name=SMALL, trust_remote_code=False, max_length=512, device=None):
         # trust_remote_code: some models ship their own Python code on the Hub. Only enable it
         # for publishers you trust, because that code runs on your machine.
         from sentence_transformers import CrossEncoder
         self.name = model_name
         self.model = CrossEncoder(model_name, trust_remote_code=trust_remote_code,
-                                  max_length=max_length)
+                                  max_length=max_length, device=device)
 
     @classmethod
-    def from_key(cls, key):
+    def from_key(cls, key, **kwargs):
         model_id, remote = MODELS[key]
-        return cls(model_id, trust_remote_code=remote)
+        return cls(model_id, trust_remote_code=remote, **kwargs)
 
     def n_params(self):
         return sum(p.numel() for p in self.model.parameters())

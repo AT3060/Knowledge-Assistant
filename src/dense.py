@@ -20,11 +20,11 @@ import numpy as np
 
 class DenseRetriever:
     def __init__(self, texts, model_name="intfloat/multilingual-e5-small",
-                 query_prefix="query: ", passage_prefix="passage: "):
+                 query_prefix="query: ", passage_prefix="passage: ", device=None):
         # Imported here so the rest of the project works without installing torch.
         from sentence_transformers import SentenceTransformer
 
-        self.model = SentenceTransformer(model_name)
+        self.model = SentenceTransformer(model_name, device=device)
         self.query_prefix = query_prefix
         start = time.perf_counter()
         self.matrix = self.model.encode([passage_prefix + t for t in texts],

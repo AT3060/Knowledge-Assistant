@@ -22,12 +22,13 @@ def with_header(chunk):
 
 
 class RAGPipeline:
-    def __init__(self, chunks, generator=None, reranker_key="large", alpha=0.7, pool=20, top_k=5):
+    def __init__(self, chunks, generator=None, reranker_key="large", alpha=0.7, pool=20, top_k=5,
+                 device=None):
         self.chunks, self.generator, self.pool, self.top_k = chunks, generator, pool, top_k
         self.texts = [with_header(c) for c in chunks]
         self.hybrid = Hybrid(BM25(self.texts, Tokenizer(stopwords=True, stemming=True)),
-                             DenseRetriever(self.texts, E5), "weighted", alpha)
-        self.reranker = Reranker.from_key(reranker_key)
+                             DenseRetriever(self.texts, E5, device=device), "weighted", alpha)
+        self.reranker = Reranker.from_key(reranker_key, device=device)
 
     def retrieve(self, question):
         """Top-k chunks after reranking, with their reranker scores."""
@@ -54,7 +55,8 @@ class RAGPipeline:
             "abstained": abstained,
             "citations": citations,
             "invalid_citations": invalid,
-            "passages": [{"page_id": c["page_id"], "score": s} for c, s in hits],
+            "passages": [{"page_id": c["page_id"], "doc": c["doc"], "page": c["page"], "title": c["title"],
+                          "text": c["text"], "score": s} for c, s in hits],
             "top_score": hits[0][1] if hits else float("nan"),
             "t_retrieve": t1 - t0,
             "t_generate": t2 - t1,
