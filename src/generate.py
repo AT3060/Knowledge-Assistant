@@ -62,6 +62,10 @@ class Generator:
             from transformers import BitsAndBytesConfig
             kwargs["quantization_config"] = BitsAndBytesConfig(
                 load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.float16)
+            kwargs["dtype"] = torch.float16
+            # Loading briefly holds 16-bit copies of weights before quantizing them, so leave
+            # headroom on every GPU instead of letting device_map="auto" fill one GPU completely.
+            kwargs["max_memory"] = {i: "9GiB" for i in range(torch.cuda.device_count())}
         else:
             # bfloat16 needs GPU compute capability >= 8 (A100, H100 ...). The T4 is 7.5 -> float16.
             major = torch.cuda.get_device_capability()[0] if torch.cuda.is_available() else 0
