@@ -2,3 +2,4 @@ reportlab
 pypdf
 snowballstemmer
 sentence-transformers
+accelerate
