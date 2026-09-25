@@ -48,6 +48,16 @@ def share(values, label):
     return sum(v == label for v in values) / len(values) if values else float("nan")
 
 
+def read_sheet(path):
+    """Read a CSV/TSV saved by Excel (';'), Google Sheets (',') or as tab-separated text.
+    The separator is detected from the header line, so any of these programs works."""
+    with open(path, encoding="utf-8-sig", newline="") as f:
+        header = f.readline()
+        delimiter = max(";,\t", key=header.count)
+        f.seek(0)
+        return list(csv.DictReader(f, delimiter=delimiter))
+
+
 def sentences(text):
     return [s for s in re.split(r"(?<=[.!?])\s+", text.strip()) if s]
 
@@ -123,13 +133,12 @@ def main():
         # ---- 6. judge vs. human
         human_path = RESULTS / f"human_check_{args.model}.csv"
         if human_path.exists():
-            with open(human_path, encoding="utf-8-sig") as f:
-                graded = [row for row in csv.DictReader(f, delimiter=";") if row["human_correctness"].strip()]
+            graded = [row for row in read_sheet(human_path) if row.get("human_correctness", "").strip()]
             if graded:
-                agree = [row["human_correctness"].strip() == row["judge_correctness"] for row in graded]
+                agree = [row["human_correctness"].strip().lower() == row["judge_correctness"] for row in graded]
                 print(f"\n6. Judge vs. your manual grades: agreement {np.mean(agree):.3f} on {len(graded)} answers")
                 for row in graded:
-                    if row["human_correctness"].strip() != row["judge_correctness"]:
+                    if row["human_correctness"].strip().lower() != row["judge_correctness"]:
                         print(f"   disagree: {row['question'][:60]}  judge={row['judge_correctness']} "
                               f"you={row['human_correctness'].strip()}")
     else:
