@@ -3,3 +3,5 @@ pypdf
 snowballstemmer
 sentence-transformers
 accelerate
+fastapi
+uvicorn[standard]
