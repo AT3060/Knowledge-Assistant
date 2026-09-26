@@ -1,8 +1,12 @@
 # Deutscher Enterprise Knowledge Copilot
 
+[![CI](https://github.com/AT3060/Knowledge-Assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/AT3060/Knowledge-Assistant/actions/workflows/ci.yml)
+
 **A German question-answering assistant for hospital IT documentation.** An employee asks a question in German and gets an answer that is generated only from the internal handbooks, with a clickable citation (document + page) for every statement, a confidence indicator, and an explicit "I don't know" when the documents don't contain the answer.
 
 🔗 **Live demo:** [huggingface.co/spaces/Areftawana3/Knowledge-Assistant](https://huggingface.co/spaces/Areftawana3/Knowledge-Assistant) (runs on ZeroGPU)
+
+🐳 **Also runs as a production-style service:** FastAPI + Qdrant vector database + Prometheus/Grafana monitoring, started with one `docker compose` command, with 40 automated tests in GitHub Actions CI. See [From demo to service](#from-demo-to-service).
 
 | | |
 |---|---|
@@ -49,6 +53,65 @@ flowchart LR
 | Random baseline | Recall@10 ≈ 8 % (so high scores are meaningful) |
 
 Ten system handbooks deliberately share one page structure (access requests, password reset, outage procedures …), producing **near-duplicate distractor pages**: to answer "Wer genehmigt den PACS-Zugang?", the retriever must pick the PACS page out of ten almost identical access pages.
+
+---
+
+## From demo to service
+
+The Gradio demo is for people. For integration into other systems (an intranet page, a Teams bot, a ticket system), the same pipeline also runs as a containerized REST service with monitoring. The evaluated pipeline code (`src/`) is unchanged; the service is built around it.
+
+```mermaid
+flowchart LR
+    U[Client<br/>intranet page, bot, curl] -->|POST /ask| API[api container<br/>FastAPI + RAG pipeline]
+    API -->|dense search| QD[(qdrant container<br/>vector database)]
+    P[prometheus container] -->|scrapes /metrics every 15 s| API
+    G[grafana container<br/>dashboard] -->|PromQL queries| P
+    API -->|badly answered questions| RQ[review queue<br/>JSONL file]
+```
+
+### REST API (FastAPI)
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /ask` | Question → German answer, citations (document + page), confidence (0–1 and high/medium/low), `grounded`, `guardrail` |
+| `POST /retrieve` | Question → top 5 passages only, no LLM (fast, for debugging) |
+| `GET /health` | Status, loaded models, vector store; used by the Docker healthcheck |
+| `GET /metrics` | Prometheus metrics |
+| `GET /docs` | Interactive OpenAPI documentation, generated from the Pydantic schemas |
+
+Input is validated before any model runs (empty or over-long questions → HTTP 422). Without a loaded LLM, `/ask` returns 503 while `/retrieve` keeps working. All settings (`LLM_MODEL`, `RERANKER`, `QDRANT_URL`, `REVIEW_LOG`) come from environment variables, so the same image runs a 0.5B model on a laptop and the 7B model on a GPU server.
+
+### Two safety checks added after testing the API
+
+- **Citation guardrail.** The prompt *asks* the model to cite every statement; the API *checks* it. An answer that is not a refusal and cites no valid passage is replaced by the fixed "keine Information" answer and logged. This was added after the small CPU model answered *"Nein, der PACS ist nicht verfügbar."* with no source at all.
+- **One confidence scale.** The large reranker outputs probabilities (0–1), the small one raw logits (−3 … 9). Logits are converted with a sigmoid, and the high/medium/low label is only shown for the reranker whose thresholds were measured (Result 5); otherwise the API says `uncalibrated`. A threshold belongs to one specific model.
+
+### Docker and Qdrant
+
+- **Dockerfile:** CPU-only PyTorch (avoids several GB of unused CUDA libraries), dependencies before code for layer caching, non-root user, healthcheck on `/health`. Models are not baked into the image but cached in a Docker volume.
+- **Qdrant** replaces the in-memory NumPy matrix for dense retrieval. The collection name contains a hash of the chunks and the embedding model, so changed data never silently reuses stale vectors; an existing collection is not re-encoded on restart. The Qdrant retriever has the same interface as the NumPy one and was **verified to return the same scores** (difference < 10⁻⁷) and the same 20 reranker candidates, so the evaluation results above still hold.
+- **docker compose** starts the API, Qdrant, Prometheus and Grafana together; the containers reach each other by service name (`http://qdrant:6333`).
+
+### Monitoring
+
+| Signal | What it is | Used for |
+|---|---|---|
+| **Metrics** | Counters and histograms: requests by path and status, `/ask` outcome (answered / abstained / guardrail), time per stage, retrieval confidence | Grafana dashboard: answered share, guardrail blocks, low-confidence share, p50/p95 latency |
+| **Structured logs** | One JSON line per request (outcome, confidence, timings), **no question text** | Filtering and aggregation in a log tool |
+| **Review queue** | Questions that were refused, blocked, or answered with confidence < 0.1, with their top passages | A human decides what to fix |
+
+![Grafana dashboard](assets/grafana_dashboard.png)
+
+**What monitoring showed** (laptop CPU, container with Qwen2.5-**0.5B**, 23 test questions; not comparable to the GPU evaluation above):
+
+- **The generator was the bottleneck, not retrieval.** 13 of 23 answers were blocked by the guardrail, many with retrieval confidence above 0.95. In the review queue, the first three entries all had the *labelled correct page* in first place (confidence 0.97–0.997), and the small model still failed to cite or refused. With the 7B model (Result 5) 100 % of answers carry a citation, so model size, not the pipeline, explains the gap.
+- **Where the time goes depends on the hardware.** On CPU the large reranker dominates the median (≈ 6 s retrieval vs ≈ 3.5 s generation), while generation causes the long tail (p95 20–30 s). On the GPU, generation dominated. Measure in the target environment.
+- **Retrieval confidence is bimodal:** requests were either below 0.1 or above 0.9, with little in between, so a 0.1 threshold separates "documents don't cover this" cleanly.
+- **Vocabulary gaps become visible.** "Fileserver" and "Dateiserver" never occur in the handbooks (they say "Netzlaufwerke"); these questions land in the review queue with confidence ≈ 0.00, pointing to a synonym list or query rewriting as the fix.
+
+### Tests and CI
+
+40 pytest tests run in about 2 seconds **without downloading any model**: where a model is needed, a small deterministic fake stands in, because the tests check the pipeline's logic (citation parsing, fusion maths, guardrail, confidence scaling, Qdrant equivalence, metrics, review queue), while model quality is measured by `eval/`. A **regression test** re-runs the real BM25 evaluation on all 130 test questions and fails if the numbers in Result 1 change. GitHub Actions runs the tests on every push and then checks that the Docker image builds.
 
 ---
 
@@ -159,6 +222,11 @@ So the judge is usable, but probably slightly lenient: the true end-to-end corre
 - **Greedy decoding** for reproducible answers.
 - **Reproducibility:** chunk order is sorted by file name, because Windows and Linux sort paths differently. That had caused tie-breaking differences of up to 0.008 in the metrics.
 - **Error analysis over averages.** Keyword search fails in two opposite ways: *different words, same meaning* ("gespeichert … ansieht" vs. "protokolliert"), which dense retrieval fixes; and *same word, different meaning* ("gesperrt" as in account vs. session), which even the reranker only partly fixes.
+- **Check, don't trust.** Rules in a prompt are requests; the citation guardrail enforces them in code, because a model can ignore instructions.
+- **Verify migrations.** Replacing NumPy with Qdrant must not change results, so equivalence is an automated test, not an assumption.
+- **Test logic with fakes, quality with evaluation.** Unit tests use fake models and run in seconds on any machine; the expensive model evaluation lives in `eval/`.
+- **Monitoring must never break the product.** If the review queue cannot be written, the API logs a warning and keeps answering. Metric labels come from a fixed set (unknown URLs are counted as `other`), so a URL scanner cannot create thousands of time series.
+- **Privacy by default.** Logs contain no question text. The review queue stores questions and is therefore off unless `REVIEW_LOG` is set, and it is excluded from Git. A real hospital deployment would add access control and a retention period (DSGVO).
 - **ZeroGPU deployment:** models are loaded at startup and moved with `.to("cuda")`, but **nothing is computed at startup**. Running the embedding model at startup (to index the chunks) broke ZeroGPU's GPU worker. This was found by bisection (adding one component at a time) and fixed by indexing lazily on the first question, inside the `@spaces.GPU` function.
 
 ---
@@ -172,6 +240,8 @@ So the judge is usable, but probably slightly lenient: the true end-to-end corre
 - **LLM judge:** same model family as the answering model (self-preference risk), validated on only 20 human-graded answers.
 - **Confidence threshold not tuned.** All unanswerable questions are in the test set, so no refusal threshold was fitted. The reranker score is shown as information only.
 - **Multi-page questions are the weak spot** (50 % end-to-end correct on 10 questions): they need several pages in the top 5 *and* the LLM must combine them.
+- **CPU service uses a small model.** The Docker setup runs Qwen2.5-0.5B on CPU, which rarely follows the citation format (the guardrail catches it, but most questions then go unanswered). Production use needs the 7B model on a GPU, or a stronger small model.
+- **Service hardening not done:** no authentication, one worker with a lock around the models (requests are processed one at a time), no rate limiting.
 - **Latency** was measured on different hardware (laptop CPU, Kaggle T4, ZeroGPU), so it is comparable only within each table.
 
 ---
@@ -193,6 +263,7 @@ src/
   rerank.py              cross-encoder reranking
   generate.py            grounded prompt, citation parsing, LLM loading
   pipeline.py            the complete RAG pipeline (used by evaluation AND demo)
+  qdrant_store.py        dense retrieval backed by the Qdrant vector database
 eval/
   metrics.py             Recall@k, MRR, nDCG (from scratch)
   evaluate_retrieval.py  BM25 vs dense vs hybrid
@@ -207,6 +278,20 @@ results/
 space/
   app.py                 Gradio demo for Hugging Face ZeroGPU
   deploy.py              uploads exactly the files the demo needs
+api/
+  main.py                FastAPI service: /ask, /retrieve, /health, /metrics, guardrail
+  monitoring.py          Prometheus metrics, JSON event logs, review queue
+tests/                   40 pytest tests (fake models, no downloads)
+monitoring/
+  prometheus.yml         scrape configuration
+  grafana/               provisioned data source and dashboard
+scripts/
+  send_questions.py      sends test questions to the running API
+assets/                  images for this README
+Dockerfile               API image (CPU PyTorch, non-root, healthcheck)
+docker-compose.yml       api + qdrant + prometheus + grafana
+.github/workflows/ci.yml tests + Docker build on every push
+requirements-dev.txt     what the tests need (no PyTorch)
 ```
 
 ## Reproduce
@@ -231,6 +316,28 @@ python eval/judge_answers.py --answers results/answers_Qwen2.5-7B-Instruct.jsonl
 python eval/report.py --model Qwen2.5-7B-Instruct        # runs on CPU
 ```
 
+Run the service stack (needs Docker; the first start downloads the models):
+
+```bash
+docker volume create hf-cache            # once: shared model cache
+docker compose up -d --build             # api, qdrant, prometheus, grafana
+python scripts/send_questions.py         # optional: traffic for the dashboard
+```
+
+| Address | What |
+|---|---|
+| http://localhost:8000/docs | the API |
+| http://localhost:3000 | Grafana dashboard |
+| http://localhost:9090 | Prometheus |
+| http://localhost:6333/dashboard | Qdrant |
+
+Run the tests:
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest
+```
+
 Deploy the demo (needs a Hugging Face write token in `HF_TOKEN`):
 
 ```bash
@@ -241,4 +348,6 @@ python space/deploy.py --repo <user>/<space-name>
 
 Python · PyTorch · sentence-transformers · Hugging Face Transformers · bitsandbytes (4-bit) · pypdf · reportlab · Snowball stemmer · NumPy · Gradio · Hugging Face Spaces (ZeroGPU) · Kaggle GPUs
 
-**Models:** `intfloat/multilingual-e5-small` · `BAAI/bge-reranker-v2-m3` · `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` · `Qwen/Qwen2.5-7B-Instruct` · `Qwen/Qwen2.5-14B-Instruct` (judge)
+**Service:** FastAPI · Pydantic · Uvicorn · Docker · Docker Compose · Qdrant · Prometheus · Grafana · pytest · GitHub Actions
+
+**Models:** `intfloat/multilingual-e5-small` · `BAAI/bge-reranker-v2-m3` · `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` · `Qwen/Qwen2.5-7B-Instruct` · `Qwen/Qwen2.5-0.5B-Instruct` (CPU container) · `Qwen/Qwen2.5-14B-Instruct` (judge)
