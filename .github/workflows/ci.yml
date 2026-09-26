@@ -1,0 +1,30 @@
+# Step 15 - Continuous Integration: GitHub runs this on its own Linux machines on every push
+# and every pull request. Result: a green check or a red cross next to each commit on GitHub.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6              # get the repository onto the machine
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"               # same Python as in the Dockerfile
+          cache: pip                           # reuse downloaded packages between runs
+          cache-dependency-path: requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -v
+
+  docker:
+    name: Docker image builds
+    needs: tests                               # only if all tests passed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: docker build -t knowledge-copilot-api:ci .
