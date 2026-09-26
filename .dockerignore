@@ -1,0 +1,15 @@
+# Files Docker should NOT send to the build ("build context").
+# Without this, `docker build` would first upload your whole .venv (several GB) to the Docker engine.
+.git
+.venv
+__pycache__/
+*.pyc
+.env
+models/
+results/
+eval/
+space/
+data/docs/
+data/pages.jsonl
+data/questions.jsonl
+data/build_corpus.py
