@@ -1,0 +1,8 @@
+# Step 15 - What the TESTS need. Deliberately without torch / transformers / sentence-transformers:
+# the tests use fake models, so CI installs in seconds instead of minutes.
+pytest
+httpx
+fastapi
+numpy
+snowballstemmer
+qdrant-client==1.19.1
