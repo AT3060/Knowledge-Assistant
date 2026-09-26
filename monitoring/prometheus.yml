@@ -1,0 +1,8 @@
+# Step 16 - Prometheus: every 15 s, read http://api:8000/metrics and store the numbers with a timestamp.
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: copilot-api
+    static_configs:
+      - targets: ["api:8000"]          # service name from docker-compose.yml

@@ -6,3 +6,4 @@ fastapi
 numpy
 snowballstemmer
 qdrant-client==1.19.1
+prometheus-client==0.26.0

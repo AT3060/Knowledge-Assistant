@@ -1,0 +1,10 @@
+# Step 16 - "Provisioning": Grafana is configured from files at startup instead of by clicking.
+# The setup is then part of the repository - reproducible on every machine.
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true

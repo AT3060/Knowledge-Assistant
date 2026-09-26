@@ -17,6 +17,9 @@ Step 12b adds two safety checks found by testing the API on a laptop:
 Step 14: if QDRANT_URL is set, the dense vectors live in a Qdrant vector database (src/qdrant_store.py)
 instead of a NumPy matrix in RAM. Without QDRANT_URL everything works exactly as in Step 12.
 
+Step 16: monitoring (api/monitoring.py) - Prometheus metrics at GET /metrics, one JSON log line
+per request, and an optional review queue of badly answered questions (REVIEW_LOG=path).
+
 Run from the project root (laptop, CPU, small models):
     LLM_MODEL=Qwen/Qwen2.5-0.5B-Instruct RERANKER=small python -m uvicorn api.main:app --port 8000
 Retrieval only, no LLM loaded at all (starts much faster):
@@ -35,11 +38,16 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import BaseModel, Field, StringConstraints
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
+
+from api.monitoring import (ASK_OUTCOMES, CONFIDENCE, PIPELINE, STAGE_SECONDS,  # noqa: E402
+                            ReviewQueue, log_event, metrics_middleware)
 
 from generate import NO_ANSWER  # noqa: E402
 from pipeline import E5, RAGPipeline, format_sources  # noqa: E402
@@ -50,6 +58,8 @@ LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-0.5B-Instruct")   # "none" = re
 RERANKER = os.getenv("RERANKER", "small")                          # key from src/rerank.py MODELS
 CHUNKS_PATH = Path(os.getenv("CHUNKS_PATH", str(ROOT / "data" / "chunks.jsonl")))
 QDRANT_URL = os.getenv("QDRANT_URL")          # e.g. http://qdrant:6333 ; unset = in-memory NumPy (Step 5)
+REVIEW_LOG = os.getenv("REVIEW_LOG")          # e.g. /data/review/review_queue.jsonl ; unset = off
+LOW_CONFIDENCE = 0.1                          # below this (calibrated reranker only) -> review queue
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("knowledge-api")
@@ -164,6 +174,9 @@ def create_app(rag=None):
         # PyTorch models are not guaranteed to be safe when two requests use them at the same time.
         # The lock lets requests queue up and run the pipeline one after another.
         app.state.lock = threading.Lock()
+        app.state.review = ReviewQueue(REVIEW_LOG)
+        PIPELINE.info({"llm": LLM_MODEL if app.state.rag.generator is not None else "none",
+                       "reranker": RERANKER, "vector_store": "qdrant" if QDRANT_URL else "in-memory"})
         log.info("pipeline ready in %.1f s (llm=%s, reranker=%s)", time.perf_counter() - start,
                  LLM_MODEL, RERANKER)
         yield
@@ -171,6 +184,13 @@ def create_app(rag=None):
     app = FastAPI(title="Deutscher Enterprise Knowledge Copilot API", version="0.1.0",
                   description="German question answering over hospital IT handbooks, with citations.",
                   lifespan=lifespan)
+
+    app.middleware("http")(metrics_middleware)   # Step 16: count + time every request
+
+    @app.get("/metrics", include_in_schema=False)
+    def metrics():
+        """Prometheus reads this page every 15 s (plain text, one line per time series)."""
+        return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
     # Endpoints are plain 'def', not 'async def': the pipeline is blocking CPU/GPU work.
     # FastAPI runs plain 'def' endpoints in a thread pool, so the server stays responsive meanwhile.
@@ -192,7 +212,10 @@ def create_app(rag=None):
             hits = request.app.state.rag.retrieve(body.question)
         t_ms = (time.perf_counter() - t0) * 1000
         top = to_probability(hits[0][1]) if hits else 0.0
-        log.info("retrieve id=%s top_score=%.3f t=%.0fms", request_id, top, t_ms)
+        STAGE_SECONDS.labels("retrieve").observe(t_ms / 1000)
+        CONFIDENCE.observe(top)
+        log_event(event="retrieve", request_id=request_id, top_score=round(top, 4),
+                  confidence_level=confidence_level(top), t_retrieve_ms=round(t_ms, 1))
         return RetrieveOut(
             request_id=request_id, confidence=top, confidence_level=confidence_level(top),
             passages=[Passage(doc=c["doc"], page=c["page"], title=c["title"], text=c["text"],
@@ -222,11 +245,22 @@ def create_app(rag=None):
             result = {**result, "answer": NO_ANSWER, "abstained": True}
         grounded = bool(result["citations"]) and guardrail is None
 
-        # One log line per request: the starting point for monitoring (Step 16).
-        log.info("ask id=%s abstained=%s grounded=%s guardrail=%s n_citations=%d top_score=%.3f "
-                 "t_retrieve=%.0fms t_generate=%.0fms", request_id, result["abstained"], grounded,
-                 guardrail, len(result["citations"]), top,
-                 result["t_retrieve"] * 1000, result["t_generate"] * 1000)
+        # Step 16: metrics, one structured log line, and the review queue.
+        outcome = "guardrail" if guardrail else "abstained" if result["abstained"] else "answered"
+        level = confidence_level(top)
+        ASK_OUTCOMES.labels(outcome).inc()
+        STAGE_SECONDS.labels("retrieve").observe(result["t_retrieve"])
+        STAGE_SECONDS.labels("generate").observe(result["t_generate"])
+        CONFIDENCE.observe(top)
+        log_event(event="ask", request_id=request_id, outcome=outcome, top_score=round(top, 4),
+                  confidence_level=level, n_citations=len(result["citations"]),
+                  t_retrieve_ms=round(result["t_retrieve"] * 1000, 1),
+                  t_generate_ms=round(result["t_generate"] * 1000, 1))
+        if outcome != "answered" or (level != "uncalibrated" and top < LOW_CONFIDENCE):
+            request.app.state.review.add({
+                "request_id": request_id, "question": body.question, "outcome": outcome,
+                "top_score": round(top, 4),
+                "top_passages": [f"{p['doc']}#{p['page']}" for p in result["passages"][:3]]})
         return AskOut(
             request_id=request_id,
             answer=result["answer"],

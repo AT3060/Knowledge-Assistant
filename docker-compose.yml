@@ -1,18 +1,24 @@
-# Step 14 - Two containers that work together: the API and the Qdrant vector database.
+# Step 14 + 16 - The API, the Qdrant vector database, and the monitoring stack.
 #
-#   docker compose up -d --build     build (if needed) and start both in the background
-#   docker compose ps                status of both containers
+#   docker compose up -d --build     build (if needed) and start everything in the background
+#   docker compose ps                status of all containers
 #   docker compose logs -f api       follow the API's log lines (Ctrl+C stops only the viewing)
-#   docker compose down              stop and remove both containers (the volumes = data stay)
+#   docker compose down              stop and remove the containers (the volumes = data stay)
 #
-# Compose puts both containers into one private network. Inside it, each service is reachable
-# under its SERVICE NAME: the API finds the database at http://qdrant:6333 - no IP addresses.
+# Compose puts all containers into one private network. Inside it, each service is reachable
+# under its SERVICE NAME: http://qdrant:6333, http://api:8000, http://prometheus:9090.
+#
+# Open in the browser:
+#   http://localhost:8000/docs        the API
+#   http://localhost:6333/dashboard   Qdrant
+#   http://localhost:9090             Prometheus (raw metrics, queries)
+#   http://localhost:3000             Grafana dashboard
 
 services:
   qdrant:
     image: qdrant/qdrant:v1.19.0          # pinned version: the same database on every machine
     ports:
-      - "6333:6333"                       # only so YOU can open the dashboard: http://localhost:6333/dashboard
+      - "6333:6333"
     volumes:
       - qdrant-data:/qdrant/storage       # vectors survive `docker compose down` and restarts
     restart: unless-stopped
@@ -26,14 +32,46 @@ services:
       LLM_MODEL: Qwen/Qwen2.5-0.5B-Instruct
       RERANKER: large
       QDRANT_URL: http://qdrant:6333      # "qdrant" = the service name above
+      REVIEW_LOG: /data/review/review_queue.jsonl   # Step 16: badly answered questions (api/monitoring.py)
       # HF_HUB_OFFLINE: "1"               # uncomment once the models are cached: start without internet
     volumes:
       - hf-cache:/cache/huggingface       # the model cache from Step 13 - no second download
+      - ./review:/data/review             # Step 16: the review queue appears in the project folder
     depends_on:
-      - qdrant                            # start Qdrant first (the API still waits until it answers)
+      - qdrant
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------- Step 16: monitoring
+  prometheus:
+    image: prom/prometheus:v3.9.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus       # metric history survives restarts
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.4.0
+    ports:
+      - "3000:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"   # local demo: view dashboards without logging in
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer  # to edit: log in as admin / admin
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/copilot.json
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
     restart: unless-stopped
 
 volumes:
   qdrant-data:
+  prometheus-data:
+  grafana-data:
   hf-cache:
-    name: hf-cache                        # reuse the existing volume instead of creating a new, empty one
+    external: true                        # created in Step 13 with `docker run` - just use it

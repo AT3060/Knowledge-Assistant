@@ -39,8 +39,8 @@ COPY data/chunks.jsonl data/chunks.jsonl
 
 # 4) Do not run as root: if someone ever broke into the app, they would not own the container.
 RUN useradd --create-home appuser \
-    && mkdir -p /cache/huggingface \
-    && chown -R appuser /cache
+    && mkdir -p /cache/huggingface /data/review \
+    && chown -R appuser /cache /data
 USER appuser
 
 EXPOSE 8000

@@ -4,3 +4,4 @@ __pycache__/
 .env
 models/
 .pytest_cache/
+review/
