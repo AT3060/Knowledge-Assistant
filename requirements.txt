@@ -5,3 +5,4 @@ sentence-transformers
 accelerate
 fastapi
 uvicorn[standard]
+qdrant-client==1.19.1

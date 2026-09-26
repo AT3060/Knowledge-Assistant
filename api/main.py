@@ -14,6 +14,9 @@ Step 12b adds two safety checks found by testing the API on a laptop:
     - citation guardrail: an answer without a valid citation is replaced by the "no information" answer
     - confidence on one 0-1 scale for every reranker, with a high/medium/low label only where calibrated
 
+Step 14: if QDRANT_URL is set, the dense vectors live in a Qdrant vector database (src/qdrant_store.py)
+instead of a NumPy matrix in RAM. Without QDRANT_URL everything works exactly as in Step 12.
+
 Run from the project root (laptop, CPU, small models):
     LLM_MODEL=Qwen/Qwen2.5-0.5B-Instruct RERANKER=small python -m uvicorn api.main:app --port 8000
 Retrieval only, no LLM loaded at all (starts much faster):
@@ -39,16 +42,18 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from generate import NO_ANSWER  # noqa: E402
-from pipeline import RAGPipeline, format_sources  # noqa: E402
+from pipeline import E5, RAGPipeline, format_sources  # noqa: E402
 
 # Configuration comes from environment variables, not from the code. The same code can then run
 # with a 0.5B model on a laptop and with the 7B model on a GPU server - only the settings change.
 LLM_MODEL = os.getenv("LLM_MODEL", "Qwen/Qwen2.5-0.5B-Instruct")   # "none" = retrieval only
 RERANKER = os.getenv("RERANKER", "small")                          # key from src/rerank.py MODELS
 CHUNKS_PATH = Path(os.getenv("CHUNKS_PATH", str(ROOT / "data" / "chunks.jsonl")))
+QDRANT_URL = os.getenv("QDRANT_URL")          # e.g. http://qdrant:6333 ; unset = in-memory NumPy (Step 5)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("knowledge-api")
+logging.getLogger("httpx").setLevel(logging.WARNING)   # hide one log line per Hugging Face / Qdrant request
 
 
 # ---------------------------------------------------------------- request / response schemas
@@ -136,7 +141,15 @@ def load_pipeline():
         # On CPU use float32: float16 on CPU is slow or unsupported for many operations.
         generator = Generator(LLM_MODEL, device_map="auto" if use_gpu else None,
                               dtype=None if use_gpu else torch.float32)
-    return RAGPipeline(chunks, generator, reranker_key=RERANKER)
+    if not QDRANT_URL:
+        return RAGPipeline(chunks, generator, reranker_key=RERANKER)
+
+    # Step 14: lazy_index=True -> the NumPy retriever loads the e5 model but encodes nothing.
+    # Then we swap it for the Qdrant retriever, which reuses the same e5 model for the queries.
+    from qdrant_store import QdrantDense
+    rag = RAGPipeline(chunks, generator, reranker_key=RERANKER, lazy_index=True)
+    rag.hybrid.dense = QdrantDense(rag.hybrid.dense.model, E5, rag.texts, chunks, QDRANT_URL)
+    return rag
 
 
 def create_app(rag=None):
@@ -168,6 +181,7 @@ def create_app(rag=None):
         return {"status": "ok",
                 "llm": LLM_MODEL if rag_.generator is not None else None,
                 "reranker": RERANKER,
+                "vector_store": "qdrant" if QDRANT_URL else "in-memory",
                 "n_chunks": len(rag_.chunks)}
 
     @app.post("/retrieve", response_model=RetrieveOut)
